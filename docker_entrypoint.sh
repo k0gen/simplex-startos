@@ -2,8 +2,6 @@
 
 set -e
 
-apt-get install -y tini netcat
-
 confd="/etc/opt/simplex"
 logd="/var/opt/simplex/"
 
