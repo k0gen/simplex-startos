@@ -24,7 +24,7 @@ main:
   args: []
   mounts:
     main: /root/
-    conf: /etc/opt/simplex
+    conf: /etc/opt
     log: /var/opt/simplex
 health-checks:
   api:
@@ -61,6 +61,7 @@ interfaces:
     tor-config:
       port-mapping:
         5223: "5223"
+        443: "443"
     ui: false
     protocols:
       - tcp
@@ -80,7 +81,7 @@ backup:
       BACKUP: /mnt/backup
       compat: /assets
       main: /root/start9
-      conf: /etc/opt/simplex
+      conf: /etc/opt
       log: /var/opt/simplex
   restore:
     type: docker
@@ -96,7 +97,7 @@ backup:
       BACKUP: /mnt/backup
       compat: /assets
       main: /root/start9
-      conf: /etc/opt/simplex
+      conf: /etc/opt
       log: /var/opt/simplex
 migrations:
   from:

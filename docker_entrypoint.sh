@@ -1,12 +1,13 @@
 #!/usr/bin/env sh
 
 set -e
+printf "\n\n [i] Starting SimpleX ...\n\n"
 
-confd="/etc/opt/simplex"
-logd="/var/opt/simplex/"
+confd="/etc/opt"
+logd="/var/opt/simplex"
 
 # Check if smp-server has been initialized
-if [ ! -f "$confd/smp-server.ini" ]; then
+if [ ! -f "$confd/simplex/smp-server.ini" ]; then
   # Set a 15 digit server password. See the comments in smp-server.ini for a description of what this does
   export PASS=$(head /dev/urandom | tr -dc A-Za-z0-9 | head -c 15) 
 
@@ -14,7 +15,17 @@ if [ ! -f "$confd/smp-server.ini" ]; then
   smp-server init -y -l --password $PASS
 
   else
-    export PASS=$(grep -i "^create_password" $confd/smp-server.ini | awk -F ':' '{print $2}' | awk '{$1=$1};1')
+    export PASS=$(grep -i "^create_password" $confd/simplex/smp-server.ini | awk -F ':' '{print $2}' | awk '{$1=$1};1')
+fi
+
+# Check if xftp-server has been initialized
+if [ ! -f "$confd/simplex-xftp/file-server.ini" ]; then
+  # Init certificates and configs
+  mkdir -p /root/xftp
+  xftp-server init -q '10gb' -p /root/xftp/
+
+  else
+  echo "All good! - XFTP initialized"
 fi
 
 # Backup store log just in case
@@ -33,27 +44,34 @@ if [ -f "${_file}" ]; then
 fi
 unset -v _file
 
-
 TOR_ADDRESS=$(sed -n -e 's/^tor-address: \(.*\)/\1/p' /root/start9/config.yaml)
-SERVER_FINGERPRINT=$(cat $confd/fingerprint)
+SMP_FINGERPRINT=$(cat $confd/simplex/fingerprint)
+XFTP_FINGERPRINT=$(cat $confd/simplex-xftp/fingerprint)
 
-SMP_URL="smp://$SERVER_FINGERPRINT:$PASS@$TOR_ADDRESS"
-
+SMP_URL="smp://$SMP_FINGERPRINT:$PASS@$TOR_ADDRESS"
+XFTP_URL="xftp://$XFTP_FINGERPRINT@$TOR_ADDRESS"
 mkdir -p /root/start9
 
 cat << EOF > /root/start9/stats.yaml
 ---
 version: 2
 data:
-  SimpleX Server Address:
+  SimpleX SMP Server Address:
     type: string
     value: $SMP_URL
     description: Your SMP Server address, used in client applications.
     copyable: true
     qr: true
     masked: true
+  SimpleX XFTP Server Address:
+    type: string
+    value: $XFTP_URL
+    description: Your XFTP Server address, used in client applications.
+    copyable: true
+    qr: true
+    masked: true
 EOF
 
-# Finally, run smp-sever. Notice that "exec" here is important:
+# Finally, run smp-sever and xftp-server. Notice that "exec" here is important:
 # smp-server replaces our helper script, so that it can catch INT signal
-exec tini -s -- smp-server start +RTS -N -RTS
+exec tini -s -- sh -c "smp-server start +RTS -N -RTS & xftp-server start +RTS -N -RTS"
