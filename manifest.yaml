@@ -1,7 +1,10 @@
 id: simplex
 title: "SimpleX Server"
 version: 5.6.1
-release-notes: "Upstream update to 5.6.1"
+release-notes: |
+  - SMP upstream update to 5.6.1
+  - Added XFTP Server
+  - Instructions change 
 license: MIT
 wrapper-repo: "https://github.com/Start9Labs/simplex-startos"
 upstream-repo: "https://github.com/simplex-chat/simplexmq/"
@@ -24,7 +27,8 @@ main:
   args: []
   mounts:
     main: /root/
-    conf: /etc/opt
+    conf: /etc/opt/simplex
+    xftp: /etc/opt/simplex-xftp
     log: /var/opt/simplex
 health-checks:
   api:
@@ -52,15 +56,25 @@ volumes:
     type: assets
   conf:
     type: data
+  xftp:
+    type: data
   log: 
     type: data
 interfaces:
   main:
-    name: SimpleX Interface
+    name: SimpleX SMP Interface
     description: Do not use the URL below. Instead, look in the Properties section to get your SimpleX server address.
     tor-config:
       port-mapping:
         5223: "5223"
+    ui: false
+    protocols:
+      - tcp
+  xftp:
+    name: SimpleX XFTP Interface
+    description: Do not use the URL below. Instead, look in the Properties section to get your SimpleX server address.
+    tor-config:
+      port-mapping:
         443: "443"
     ui: false
     protocols:
@@ -81,7 +95,8 @@ backup:
       BACKUP: /mnt/backup
       compat: /assets
       main: /root/start9
-      conf: /etc/opt
+      conf: /etc/opt/simplex
+      xftp: /etc/opt/simplex-xftp
       log: /var/opt/simplex
   restore:
     type: docker
@@ -97,7 +112,8 @@ backup:
       BACKUP: /mnt/backup
       compat: /assets
       main: /root/start9
-      conf: /etc/opt
+      conf: /etc/opt/simplex
+      xftp: /etc/opt/simplex-xftp
       log: /var/opt/simplex
 migrations:
   from:

@@ -4,11 +4,21 @@ import { compat, types as T } from "../deps.ts";
 
 export const getConfig: T.ExpectedExports.getConfig = compat.getConfig({
     "tor-address": {
-      "name": "Tor Address",
+      "name": "SMP Tor Address",
       "description": "The Tor address for SMP Server",
       "type": "pointer",
       "subtype": "package",
       "package-id": "simplex",
       "target": "tor-address",
       "interface": "main"
-    }});
+    },
+    "xftp-address": {
+      "name": "XFTP Tor Address",
+      "description": "The Tor address for XFTP Server",
+      "type": "pointer",
+      "subtype": "package",
+      "package-id": "simplex",
+      "target": "tor-address",
+      "interface": "xftp"
+    }
+  });
