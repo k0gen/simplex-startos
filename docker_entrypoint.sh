@@ -80,8 +80,8 @@ EOF
 
 _term() {
   echo "Caught TERM signal!"
-  kill -TERM "$smp_process" 2>/dev/null
-  kill -TERM "$xftp_process" 2>/dev/null
+  kill -INT "$smp_process" 2>/dev/null
+  kill -INT "$xftp_process" 2>/dev/null
 }
 
 smp-server start +RTS -N -RTS &
@@ -90,6 +90,6 @@ smp_process=$!
 xftp-server start +RTS -N -RTS &
 xftp_process=$!
 
-trap _term TERM
+trap _term INT
 
-wait $smp_process $xftp_process
+wait $xftp_process $smp_process
