@@ -1,9 +1,8 @@
 id: simplex
 title: "SimpleX Server"
-version: 5.7.2
+version: 5.6.2
 release-notes: |
-  - SMP upstream update to 5.7.2
-  - Added XFTP Server
+  - SMP upstream update to 5.6.2
   - Instructions change 
 license: MIT
 wrapper-repo: "https://github.com/Start9Labs/simplex-startos"
