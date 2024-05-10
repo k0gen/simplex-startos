@@ -48,7 +48,7 @@ unset -v _file
 TOR_ADDRESS=$(sed -n -e 's/^tor-address: \(.*\)/\1/p' /root/start9/config.yaml)
 XFTP_ADDRESS=$(sed -n -e 's/^xftp-address: \(.*\)/\1/p' /root/start9/config.yaml)
 SMP_FINGERPRINT=$(cat $confd/fingerprint)
-XFTP_FINGERPRINT=$(cat $xftp/fingerprint)
+# XFTP_FINGERPRINT=$(cat $xftp/fingerprint)
 
 SMP_URL="smp://$SMP_FINGERPRINT:$PASS@$TOR_ADDRESS"
 XFTP_URL="xftp://$XFTP_FINGERPRINT@$XFTP_ADDRESS"

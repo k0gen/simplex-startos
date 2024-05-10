@@ -24,5 +24,5 @@ export const migration: T.ExpectedExports.migration =
         ),
       },
     },
-    "5.6.2"
+    "5.6.2.1"
   );
