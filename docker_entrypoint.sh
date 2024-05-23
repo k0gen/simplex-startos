@@ -19,6 +19,12 @@ if [ ! -f "$confd/smp-server.ini" ]; then
     export PASS=$(grep -i "^create_password" $confd/smp-server.ini | awk -F ':' '{print $2}' | awk '{$1=$1};1')
 fi
 
+if [ -f "$xftp/file-server.ini" ]; then
+   # Remove the directory if file-server.ini exists
+   rm -r $xftp/*
+else
+   echo "Nice and clean."
+fi
 # # Check if xftp-server has been initialized
 # if [ ! -f "$xftp/file-server.ini" ]; then
 #   # Init certificates and configs
