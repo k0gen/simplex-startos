@@ -19,21 +19,15 @@ if [ ! -f "$confd/smp-server.ini" ]; then
     export PASS=$(grep -i "^create_password" $confd/smp-server.ini | awk -F ':' '{print $2}' | awk '{$1=$1};1')
 fi
 
-if [ -f "$xftp/file-server.ini" ]; then
-   # Remove the directory if file-server.ini exists
-   rm -r $xftp/*
-else
-   echo "Nice and clean."
-fi
-# # Check if xftp-server has been initialized
-# if [ ! -f "$xftp/file-server.ini" ]; then
-#   # Init certificates and configs
-#   mkdir -p /root/xftp
-#   xftp-server init -q '10gb' -p /root/xftp/
+# Check if xftp-server has been initialized
+if [ ! -f "$xftp/file-server.ini" ]; then
+  # Init certificates and configs
+  mkdir -p /root/xftp
+  xftp-server init -q '10gb' -p /root/xftp/
 
-#   else
-#   echo "All good! - XFTP initialized"
-# fi
+  else
+  echo "All good! - XFTP initialized"
+fi
 
 # Backup store log just in case
 #
@@ -54,7 +48,7 @@ unset -v _file
 TOR_ADDRESS=$(sed -n -e 's/^tor-address: \(.*\)/\1/p' /root/start9/config.yaml)
 XFTP_ADDRESS=$(sed -n -e 's/^xftp-address: \(.*\)/\1/p' /root/start9/config.yaml)
 SMP_FINGERPRINT=$(cat $confd/fingerprint)
-# XFTP_FINGERPRINT=$(cat $xftp/fingerprint)
+XFTP_FINGERPRINT=$(cat $xftp/fingerprint)
 
 SMP_URL="smp://$SMP_FINGERPRINT:$PASS@$TOR_ADDRESS"
 XFTP_URL="xftp://$XFTP_FINGERPRINT@$XFTP_ADDRESS"
@@ -71,32 +65,31 @@ data:
     copyable: true
     qr: true
     masked: true
+  SimpleX XFTP Server Address:
+    type: string
+    value: $XFTP_URL
+    description: Your XFTP Server address, used in client applications.
+    copyable: true
+    qr: true
+    masked: true
 EOF
-#   SimpleX XFTP Server Address:
-#     type: string
-#     value: $XFTP_URL
-#     description: Your XFTP Server address, used in client applications.
-#     copyable: true
-#     qr: true
-#     masked: true
-# EOF
 
 # Finally, run smp-sever and xftp-server. Notice that "exec" here is important:
 # smp-server replaces our helper script, so that it can catch INT signal
 # exec tini -s -- sh -c "smp-server start +RTS -N -RTS & xftp-server start +RTS -N -RTS; wait"
-exec tini -s -- smp-server start +RTS -N -RTS
-# _term() {
-#   echo "Caught TERM signal!"
-#   kill -INT "$smp_process" 2>/dev/null
-#   kill -INT "$xftp_process" 2>/dev/null
-# }
 
-# smp-server start +RTS -N -RTS &
-# smp_process=$!
+_term() {
+  echo "Caught TERM signal!"
+  kill -INT "$smp_process" 2>/dev/null
+  kill -INT "$xftp_process" 2>/dev/null
+}
 
-# xftp-server start +RTS -N -RTS &
-# xftp_process=$!
+smp-server start +RTS -N -RTS &
+smp_process=$!
 
-# trap _term INT
+xftp-server start +RTS -N -RTS &
+xftp_process=$!
 
-# wait $xftp_process $smp_process
+trap _term INT
+
+wait $xftp_process $smp_process
