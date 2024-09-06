@@ -1,10 +1,9 @@
 id: simplex
 title: "SimpleX Server"
-version: 5.8.2
+version: 6.0.3
 release-notes: |
-  - SMP upstream update to 5.8.2
-  - Added XFTP Server
-  - Instructions update
+  - ALl upstream code update to 6.0.3
+  - More changes can be found in the [6.0.3 changelog](https://github.com/simplex-chat/simplexmq/blob/master/CHANGELOG.md#603)
 license: MIT
 wrapper-repo: "https://github.com/Start9Labs/simplex-startos"
 upstream-repo: "https://github.com/simplex-chat/simplexmq/"
