@@ -1,9 +1,10 @@
 id: simplex
 title: "SimpleX Server"
-version: 6.0.3
+version: 6.0.4
 release-notes: |
-  - ALl upstream code update to 6.0.3
-  - More changes can be found in the [6.0.3 changelog](https://github.com/simplex-chat/simplexmq/blob/master/CHANGELOG.md#603)
+  - All upstream code updated to 6.0.4
+  - Bug fixes and code cleanup
+  - More changes can be found in the [6.0.4 changelog](https://github.com/simplex-chat/simplexmq/blob/master/CHANGELOG.md#604)
 license: MIT
 wrapper-repo: "https://github.com/Start9Labs/simplex-startos"
 upstream-repo: "https://github.com/simplex-chat/simplexmq/"

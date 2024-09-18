@@ -15,9 +15,34 @@ if [ ! -f "$confd/smp-server.ini" ]; then
   # Init certificates and configs
   smp-server init -y -l --password $PASS
 
-  else
-    export PASS=$(grep -i "^create_password" $confd/smp-server.ini | awk -F ':' '{print $2}' | awk '{$1=$1};1')
+else
+  export PASS=$(grep -i "^create_password" $confd/smp-server.ini | awk -F ':' '{print $2}' | awk '{$1=$1};1')
 fi
+
+# Function to add or update a section in the smp-server.ini config file
+add_or_update_section() {
+  local file="$1"
+  local section="$2"
+  local content="$3"
+
+  if grep -q "^\[$section\]" "$file"; then
+    # Section exists, update it
+    sed -i "/^\[$section\]/,/^\[/c\\[$section]\n$content" "$file"
+    echo "$section section updated in $file"
+  else
+    # Section doesn't exist, add it
+    echo -e "\n[$section]\n$content" >> "$file"
+    echo "$section section added to $file"
+  fi
+}
+# Add or update INFORMATION section
+add_or_update_section "$confd/smp-server.ini" "INFORMATION" "source_code: https://github.com/simplex-chat/simplexmq"
+
+# Add or update PROXY section
+add_or_update_section "$confd/smp-server.ini" "PROXY" "socks_proxy: 127.0.0.1:9050\nsocks_mode: onion"
+
+# Add or update WEB section
+add_or_update_section "$confd/smp-server.ini" "WEB" "static_path: /var/opt/simplex/www"
 
 # Check if xftp-server has been initialized
 if [ ! -f "$xftp/file-server.ini" ]; then
@@ -74,12 +99,11 @@ data:
     masked: true
 EOF
 
-# Finally, run smp-sever and xftp-server. Notice that "exec" here is important:
-# smp-server replaces our helper script, so that it can catch INT signal
-# exec tini -s -- sh -c "smp-server start +RTS -N -RTS & xftp-server start +RTS -N -RTS; wait"
+# Run smp-server and xftp-server as background processes
+# Set up a trap to catch INT signal for graceful shutdown
 
 _term() {
-  echo "Caught TERM signal!"
+  echo "Caught INT signal!"
   kill -INT "$smp_process" 2>/dev/null
   kill -INT "$xftp_process" 2>/dev/null
 }
