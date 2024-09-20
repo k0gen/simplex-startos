@@ -32,24 +32,20 @@ RUN cabal build exe:xftp-server
 # Create new path containing all files needed
 RUN mkdir /final
 WORKDIR /final
-RUN ls -R /project/dist-newstyle
 
 # Strip the binaries from debug symbols to reduce size
 RUN for app in smp-server xftp-server; do \
-    bin=$(find /project/dist-newstyle -name "$app" -type f -executable) && \
-    echo "Found binary: $bin" && \
+    bin=$(find / -name "$app" -type f -executable 2>/dev/null) && \
     if [ -n "$bin" ]; then \
         mv "$bin" ./ && \
         strip ./"$app" && \
-        if [ -f "/project/scripts/docker/entrypoint-$app" ]; then \
-            mv "/project/scripts/docker/entrypoint-$app" ./entrypoint-"$app"; \
-        else \
-            echo "Entrypoint script not found for $app"; \
-        fi \
+        mv /project/scripts/docker/entrypoint-"$app" ./entrypoint; \
     else \
-        echo "Binary not found for $app"; \
-    fi \
+        echo "Binary $app not found"; \
+        exit 1; \
+    fi; \
 done
+
 ### Final stage
 FROM ubuntu:${TAG}
 
