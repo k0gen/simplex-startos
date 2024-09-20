@@ -72,7 +72,7 @@ jobs:
             --tag ghcr.io/${REPO_NAME}:$SIMPLEX_VERSION \
             --build-arg SIMPLEX_VERSION=$SIMPLEX_VERSION \
             --push \
-            simplex-chat
+            .
 
       - name: Image build complete
         run: echo "Docker image has been built and published."

@@ -21,7 +21,7 @@ ENV PATH="/root/.cabal/bin:/root/.ghcup/bin:$PATH"
 RUN ghcup set ghc "${BOOTSTRAP_HASKELL_GHC_VERSION}" && \
     ghcup set cabal "${BOOTSTRAP_HASKELL_CABAL_VERSION}"
 
-COPY . /project
+COPY ./simplex-chat /project
 WORKDIR /project
 
 # Compile apps
