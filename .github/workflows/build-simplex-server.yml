@@ -59,6 +59,16 @@ jobs:
             echo "Using specified version: ${{ github.event.inputs.simplex_version }}"
             echo "SIMPLEX_VERSION=${{ github.event.inputs.simplex_version }}" >> $GITHUB_ENV
           fi
+          
+      - name: List directory contents
+        run: |
+          echo "Current directory:"
+          pwd
+          echo "Contents of current directory:"
+          ls -la
+          echo "Contents of .github directory:"
+          ls -la .github
+    
       - name: Build and push Docker image for x86 and arm
         run: |
           echo "Building SimpleX version: $SIMPLEX_VERSION"
@@ -70,6 +80,7 @@ jobs:
             --file .github/Dockerfile.simplex \
             --tag ghcr.io/${REPO_NAME}:$SIMPLEX_VERSION \
             --build-arg SIMPLEX_VERSION=$SIMPLEX_VERSION \
+            --progress=plain \
             --push \
             .
 
