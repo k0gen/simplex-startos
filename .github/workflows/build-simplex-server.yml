@@ -58,7 +58,7 @@ jobs:
           else
             echo "Using specified version: ${{ github.event.inputs.simplex_version }}"
             echo "SIMPLEX_VERSION=${{ github.event.inputs.simplex_version }}" >> $GITHUB_ENV
-
+          fi
       - name: Build and push Docker image for x86 and arm
         run: |
           echo "Building SimpleX version: $SIMPLEX_VERSION"
