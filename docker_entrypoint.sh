@@ -1,23 +1,6 @@
 #!/usr/bin/env sh
 
-set -e
-printf "\n\n [i] Starting SimpleX ...\n\n"
-
-confd="/etc/opt/simplex"
-xftp="/etc/opt/simplex-xftp"
-logd="/var/opt/simplex"
-
-# Check if smp-server has been initialized
-if [ ! -f "$confd/smp-server.ini" ]; then
-  # Set a 15 digit server password. See the comments in smp-server.ini for a description of what this does
-  export PASS=$(head /dev/urandom | tr -dc A-Za-z0-9 | head -c 15) 
-
-  # Init certificates and configs
-  smp-server init -y -l --password $PASS
-
-else
-  export PASS=$(grep -i "^create_password" $confd/smp-server.ini | awk -F ':' '{print $2}' | awk '{$1=$1};1')
-fi
+confd="."
 
 # Function to add or update a section in the smp-server.ini config file
 add_or_update_section() {
@@ -27,11 +10,17 @@ add_or_update_section() {
 
   if grep -q "^\[$section\]" "$file"; then
     # Section exists, update it
-    sed -i "/^\[$section\]/,/^\[/c\\[$section]\n$content" "$file"
+    awk -v section="$section" -v content="$content" '
+      BEGIN { in_section = 0; printed = 0 }
+      /^\[/ { if (in_section && !printed) { print content; printed = 1 }; in_section = 0 }
+      /^\['"$section"'\]/ { in_section = 1; print; print content; printed = 1; next }
+      { if (!in_section || !printed) print }
+      END { if (in_section && !printed) print content }
+    ' "$file" > "${file}.tmp" && mv "${file}.tmp" "$file"
     echo "$section section updated in $file"
   else
     # Section doesn't exist, add it
-    echo -e "\n[$section]\n$content" >> "$file"
+    echo "\n[$section]\n$content" >> "$file"
     echo "$section section added to $file"
   fi
 }
