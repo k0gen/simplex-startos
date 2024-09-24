@@ -1,6 +1,19 @@
 #!/usr/bin/env sh
 
-confd="."
+set -e
+printf "\n\n [i] Starting SimpleX ...\n\n"
+confd="/etc/opt/simplex"
+xftp="/etc/opt/simplex-xftp"
+logd="/var/opt/simplex"
+# Check if smp-server has been initialized
+if [ ! -f "$confd/smp-server.ini" ]; then
+  # Set a 15 digit server password. See the comments in smp-server.ini for a description of what this does
+  export PASS=$(head /dev/urandom | tr -dc A-Za-z0-9 | head -c 15) 
+  # Init certificates and configs
+  smp-server init -y -l --password $PASS
+else
+  export PASS=$(grep -i "^create_password" $confd/smp-server.ini | awk -F ':' '{print $2}' | awk '{$1=$1};1')
+fi
 
 # Function to add or update a section in the smp-server.ini config file
 add_or_update_section() {
@@ -28,7 +41,7 @@ add_or_update_section() {
 add_or_update_section "$confd/smp-server.ini" "INFORMATION" "source_code: https://github.com/simplex-chat/simplexmq"
 
 # Add or update PROXY section
-add_or_update_section "$confd/smp-server.ini" "PROXY" "socks_proxy: embassy:9050\nsocks_mode: onion"
+add_or_update_section "$confd/smp-server.ini" "PROXY" "socks_proxy: 172.18.0.1:9050\nsocks_mode: onion"
 
 # Add or update WEB section
 add_or_update_section "$confd/smp-server.ini" "WEB" "static_path: /var/opt/simplex/www"
