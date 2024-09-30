@@ -1,18 +1,16 @@
-# Getting Started with SimpleX Server
+# Getting started with SimpleX
 
 ## About
 
-Your SimpleX Server comes with an [SMP server](https://simplex.chat/docs/server.html) (for relaying messages) and an [XFTP server](https://simplex.chat/docs/xftp-server.html) (for transferring files and media).
+Your SimpleX Server comes with an [SMP server](https://simplex.chat/docs/server.html) for sending/receiving messages and an [XFTP server](https://simplex.chat/docs/xftp-server.html) for transferring files and media.
 
-SimpleX chats are unique in that each participant chooses which server to use for receiving messages. I receive messages through `Server A`, and you receive messages through `Server B`. This means that I must send messages to `Server B`, and you must send messages to `Server A`.
+In SimpleX, participants choose which servers to use for receiving messages and files. I receive through my private server, and you receive through your private server. Or we could both receive through the same private server. Or we could each use different public servers.
 
 SimpleX servers function as queues. Servers only store messages until a client retrieves them, after which they are deleted. This means message histories are stored on client devices, so it is client devices that must be backed up to prevent loss of messages.
 
-## General Usage Instructions
-
 For detailed instructions on using SimpleX, check out the [official docs](https://simplex.chat/docs/guide/readme.html).
 
-## Connecting to Your Own Server
+## Initial setup
 
 1. Ensure your SimpleX Server is running, and health checks are passing.
 
@@ -20,25 +18,31 @@ For detailed instructions on using SimpleX, check out the [official docs](https:
 
 1. Download and install the [SimpleX app](https://simplex.chat/) on your client device.
 
-1. During initial setup, if you choose to create a profile, _do not_ create a SimpleX address. You can do this later after you connect to your own server.
+1. During initial setup of the app, if you choose to create a profile, _do not_ create a SimpleX address. You can do this later, once you have configured your servers, since your server is included in your address.
 
-### Enable Tor
+## Creating a fully anonymous profile
 
-1. In the SimpleX client app, go to `Settings > Network & Servers`.
+The purpose of this profile is _total_ anonymity. For this profile, you will receive messages through your self-hosted server over Tor, and you only permit sending messages to other .onion servers.
+
+For sending messages to non-Tor servers, we recommend creating a separate profile entirely.
+
+SimpleX can be configured many different ways, depending on your threat model and privacy goals, each with different tradeoffs.
+
+### Enable and enforce Tor
+
+1. If you did not create a profile during initial setup, create one now.
+
+1. Navigate to `Settings > Network & servers`.
 
 1. Enable "Use SOCKS proxy".
 
-1. For `Use .onion hosts`, you have two options:
-    - `Required` (recommended): You can only send messages to someone who receives via a .onion URL. For sending and receiving with non-Tor users, we recommend creating another profile entirely.
-    - `When Available`: You can send messages to anyone. NOTE: You still receive via a .onion URL, which means your counterparty must have Tor running on their client device and "Use SOCKS proxy" enabled in their SimpleX app.
+1. For `Use .onion hosts` (this might be under `Advanced network settings`), select "Required". This means that this profile can _only_ send messages to other .onion servers.
 
-1. Remember, for this profile, you are choosing to receive messages via a Tor (.onion) server. This means whoever messages you must have Tor running on their client device and "Use SOCKS proxy" enabled in their SimpleX app.
+### Connect your SMP server for messages
 
-### Connect SMP Server
+1. Navigate to `Settings > Network & servers > Message servers`.
 
-1. In the SimpleX client app, go to `Settings > Network & Servers > SMP Servers`.
-
-1. You will see some default receiving servers (e.g. smp8, smp9, smp10). _Delete them all_. If you want to receive via these default clearnet servers, we recommend creating another profile entirely. If you choose not to delete these default servers, at least disable the "Use for new connections" setting on each of them. This will prevent them from being used without your explicit instruction.
+1. You will see some default receiving servers (e.g. smp1, smp2, smp3). It is recommended you _delete them all_ to ensure you do not accidentally use them in the future. If you choose not to delete them, at least disable the "Use for new connections" setting on each of them. This will prevent them from being used without your explicit instruction.
 
 1. Click "Add Server".
 
@@ -46,24 +50,34 @@ For detailed instructions on using SimpleX, check out the [official docs](https:
 
 1. Scan your SMP Server Address QR code, located in StartOS UI under `SimpleX Server > Properties > SMP Server Address`.
 
-1. Click "Test servers" and wait for the test to pass.
+1. Click on the newly added server.
 
-1. Click "Save servers".
+1. Click "Test server" and wait for the test to pass.
 
-1. You can now create a SimpleX Address if you want.
+1. Enabled "Use for new connections".
 
-### Connect XFTP Server
+1. Navigate back and click "Save servers".
 
-1. In the SimpleX client app, go to `Settings > Network & Servers > XFTP Servers`.
+### Connect your XFTP server for media and files
 
-1. You will see some default XFTP servers (e.g. xftp1, xftp2, xftp3). _Delete them all_. If you want to use these default clearnet servers, we recommend creating another profile entirely. If you choose not to delete these default servers, at least disable the "Use for new connections" setting on each of them. This will prevent them from being used without your explicit instruction.
+1. Navigate to `Settings > Network & servers > Media and file servers`.
 
-1. Click "Add server...".
+1. You will see some default receiving servers (e.g. xftp1, xftp2, xftp3). It is recommended you _delete them all_ to ensure you do not accidentally use them in the future. If you choose not to delete them, at least disable the "Use for new connections" setting on each of them. This will prevent them from being used without your explicit instruction.
+
+1. Click "Add server".
 
 1. Tap "Scan QR Code".
 
 1. Scan your XFTP Server Address QR code, located in StartOS UI under `SimpleX Server > Properties > XFTP Server Address`.
 
-1. Click "Test servers" and wait for the test to pass.
+1. Click on the newly added server.
 
-1. Click "Save servers".
+1. Click "Test server" and wait for the test to pass.
+
+1. Enabled "Use for new connections".
+
+1. Navigate back and click "Save servers".
+
+### Create a SimpleX address (optional)
+
+You can now create a SimpleX Address if you want, but you should _not_ share the address publicly, as it will link the .onion URL to your identity. Remember, the purpose of this profile is total anonymity.
