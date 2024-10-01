@@ -34,9 +34,11 @@ SimpleX can be configured many different ways, depending on your threat model an
 
 1. Navigate to `Settings > Network & servers`.
 
-1. Enable "Use SOCKS proxy".
+1. For iOS users: Skip this step. For other platforms: Enable "Use SOCKS proxy".
 
-1. For `Use .onion hosts` (this might be under `Advanced network settings`), select "Required". This means that this profile can _only_ send messages to other .onion servers.
+1. For `Use .onion hosts` (this might be under `SOCKS proxy settings` or `Advanced network settings`), select "Required". This means that this profile can _only_ send messages to other .onion servers.
+
+1. Finally, in `Advanced Network Settings`, set `Private Routing` to "Never".
 
 ### Connect your SMP server for messages
 
