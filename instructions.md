@@ -2,7 +2,7 @@
 
 ## About
 
-Your SimpleX Server comes with an [SMP server](https://simplex.chat/docs/server.html) for sending/receiving messages and an [XFTP server](https://simplex.chat/docs/xftp-server.html) for transferring files and media.
+Your SimpleX Server comes with a [SMP server](https://simplex.chat/docs/server.html) for sending/receiving messages and an [XFTP server](https://simplex.chat/docs/xftp-server.html) for transferring files and media.
 
 In SimpleX, participants choose which servers to use for receiving messages and files. I receive through my private server, and you receive through your private server. Or we could both receive through the same private server. Or we could each use different public servers.
 
@@ -34,9 +34,11 @@ SimpleX can be configured many different ways, depending on your threat model an
 
 1. Navigate to `Settings > Network & servers`.
 
-1. Enable "Use SOCKS proxy".
+1. For iOS users: Skip this step. For other platforms: Enable "Use SOCKS proxy".
 
-1. For `Use .onion hosts` (this might be under `Advanced network settings`), select "Required". This means that this profile can _only_ send messages to other .onion servers.
+1. Set `Use .onion hosts` to "Required" (this might be under `SOCKS proxy settings` or `Advanced network settings`). This means that this profile can _only_ send messages to other .onion servers.
+
+1. Finally, in `Advanced Network Settings`, set `Private Routing` to "Never".
 
 ### Connect your SMP server for messages
 
@@ -48,13 +50,13 @@ SimpleX can be configured many different ways, depending on your threat model an
 
 1. Tap "Scan QR Code".
 
-1. Scan your SMP Server Address QR code, located in StartOS UI under `SimpleX Server > Properties > SMP Server Address`.
+1. Scan your SMP Server Address QR code, located in StartOS UI under `SimpleX Server > Properties > SimpleX SMP Server Address`.
 
 1. Click on the newly added server.
 
 1. Click "Test server" and wait for the test to pass.
 
-1. Enabled "Use for new connections".
+1. Enable "Use for new connections".
 
 1. Navigate back and click "Save servers".
 
@@ -68,13 +70,13 @@ SimpleX can be configured many different ways, depending on your threat model an
 
 1. Tap "Scan QR Code".
 
-1. Scan your XFTP Server Address QR code, located in StartOS UI under `SimpleX Server > Properties > XFTP Server Address`.
+1. Scan your XFTP Server Address QR code, located in StartOS UI under `SimpleX Server > Properties > SimpleX XFTP Server Address`.
 
 1. Click on the newly added server.
 
 1. Click "Test server" and wait for the test to pass.
 
-1. Enabled "Use for new connections".
+1. Enable "Use for new connections".
 
 1. Navigate back and click "Save servers".
 
