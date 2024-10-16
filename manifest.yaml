@@ -1,11 +1,9 @@
 id: simplex
 title: "SimpleX Server"
-version: 6.0.5
+version: 6.0.6
 release-notes: |
-  - All upstream code updated to 6.0.5
-  - Instructions update
-  - Bug fixes and code cleanup
-  - More changes can be found in the [6.0.5 changelog](https://github.com/simplex-chat/simplexmq/blob/master/CHANGELOG.md#605)
+  - Update to the latest upstream code
+  - Update bundling process to use Deno emit module
 license: MIT
 wrapper-repo: "https://github.com/Start9Labs/simplex-startos"
 upstream-repo: "https://github.com/simplex-chat/simplexmq/"
