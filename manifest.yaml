@@ -1,9 +1,11 @@
 id: simplex
 title: "SimpleX Server"
-version: 6.0.6
+version: 6.1.3
 release-notes: |
-  - Update to the latest upstream code
-  - Update bundling process to use Deno emit module
+  - Updated to the latest upstream code with notable changes:
+    * Servers: more reliable restoring of state.
+    * SMP server: reduced memory usage and faster start.
+    * Full change log available [here](hthttps://github.com/simplex-chat/simplexmq/blob/master/CHANGELOG.md#613)
 license: MIT
 wrapper-repo: "https://github.com/Start9Labs/simplex-startos"
 upstream-repo: "https://github.com/simplex-chat/simplexmq/"
