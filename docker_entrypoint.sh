@@ -46,6 +46,9 @@ add_or_update_section "$confd/smp-server.ini" "PROXY" "socks_proxy: 172.18.0.1:9
 # Add or update WEB section
 add_or_update_section "$confd/smp-server.ini" "WEB" "static_path: /var/opt/simplex/www"
 
+# Add or update TRANSPORT section with correct port
+add_or_update_section "$confd/smp-server.ini" "TRANSPORT" "host: <hostnames>\nport: 5223\nlog_tls_errors: off\nwebsockets: off"
+
 # Check if xftp-server has been initialized
 if [ ! -f "$xftp/file-server.ini" ]; then
   # Init certificates and configs
