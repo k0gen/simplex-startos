@@ -3,9 +3,9 @@ title: "SimpleX Server"
 version: 6.2.0.7
 release-notes: |
   - Updated to the latest upstream code with notable changes:
-    * Servers: more reliable restoring of state.
-    * SMP server: reduced memory usage and faster start.
-    * Full change log available [here](hthttps://github.com/simplex-chat/simplexmq/blob/master/CHANGELOG.md#613)
+    * journal storage for messages (BETA).
+    * prevent race condition when deleting queue and to avoid "orphan" messages.
+    * Full change log available [here](https://github.com/simplex-chat/simplexmq/blob/master/CHANGELOG.md#620)
 license: MIT
 wrapper-repo: "https://github.com/Start9Labs/simplex-startos"
 upstream-repo: "https://github.com/simplex-chat/simplexmq/"
